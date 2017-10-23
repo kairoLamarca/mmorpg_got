@@ -1,5 +1,5 @@
 module.exports = function(application){
 	application.get('/', function(req, res){
-		res.send('Game of Thrones');
+		res.render('index');
 	});
 }
