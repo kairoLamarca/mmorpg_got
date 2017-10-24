@@ -1,0 +1,2 @@
+não tem necessidade de criar o banco e a collection antes de fazer a inserção
+se o mongo não encontrar o banco e a collection, ele já cria automaticamente

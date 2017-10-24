@@ -3,6 +3,7 @@ module.exports.cadastro = function(application, req, res){
 }
 
 module.exports.cadastrar = function(application, req, res){
+    
     let dadosForm = req.body;
 
     req.assert('nome', 'Nome não pode ser vazio').notEmpty();
@@ -16,6 +17,12 @@ module.exports.cadastrar = function(application, req, res){
         res.render('cadastro', {validacao: erros, dadosForm: dadosForm});
         return;
     }
+
+    const connection = application.config.dbConnection;
+
+    const UsuariosDAO = new application.app.models.UsuariosDAO(connection);
+
+    UsuariosDAO.inserirUsuario(dadosForm);
 
     res.send('podemos cadastrar');
 }
