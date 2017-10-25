@@ -2,7 +2,7 @@ function JogoDAO(connection) {
     this._connection = connection();
 }
 
-JogoDAO.prototype.gerarParametros = function(usuario){
+JogoDAO.prototype.gerarParametros = function (usuario) {
     this._connection.open((err, mongoclient) => {
         mongoclient.collection("jogo", (err, collection) => {
             collection.insert({
@@ -20,6 +20,19 @@ JogoDAO.prototype.gerarParametros = function(usuario){
     });
 }
 
-module.exports = function(){
+JogoDAO.prototype.iniciaJogo = function (res, usuario, casa) {
+    this._connection.open((err, mongoclient) => {
+        mongoclient.collection("jogo", (err, collection) => {
+            collection.find({ usuario: usuario }).toArray((err, result) => {//recupera o cursor retornado e converte em um array
+
+                res.render('jogo', { img_casa: casa, jogo: result[0] });
+
+                mongoclient.close();
+            });
+        })
+    });
+}
+
+module.exports = function () {
     return JogoDAO;
 }
