@@ -17,9 +17,15 @@ module.exports.jogo = function (application, req, res) {
 }
 
 module.exports.sair = function (application, req, res) {
-
     req.session.destroy((err) => {//apaga toda a session
         res.render('index', { validacao: {} });
     });
+}
 
+module.exports.suditos = function (application, req, res) {
+    res.render('aldeoes');
+}
+
+module.exports.pergaminhos = function (application, req, res) {
+    res.render('pergaminhos');
 }
