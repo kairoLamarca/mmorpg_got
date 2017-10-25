@@ -1,5 +1,5 @@
 module.exports.index = function (application, req, res) {
-    res.render('index', {validacao: {}});
+    res.render('index', { validacao: {} });
 }
 
 module.exports.autenticar = function (application, req, res) {
@@ -15,5 +15,9 @@ module.exports.autenticar = function (application, req, res) {
         return;
     }
 
-    res.send('ok');
+    let connection = application.config.dbConnection;
+
+    let UsuariosDAO = new application.app.models.UsuariosDAO(connection);
+
+    UsuariosDAO.autenticar(dadosForm, req, res);
 }
