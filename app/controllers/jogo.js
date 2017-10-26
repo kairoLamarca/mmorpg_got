@@ -42,7 +42,13 @@ module.exports.pergaminhos = function (application, req, res) {
         return;
     }
 
-    res.render('pergaminhos');
+    /*recuperar as ações inseridas no banco de dados*/ 
+    const connection = application.config.dbConnection;
+    const JogoDAO = new application.app.models.JogoDAO(connection);
+
+    let usuario = req.session.usuario;
+
+    JogoDAO.getAcoes(usuario, res);
 }
 
 module.exports.ordenar_acao_sudito = function (application, req, res) {
