@@ -36,12 +36,12 @@ JogoDAO.prototype.iniciaJogo = function (res, usuario, casa, msg) {
 JogoDAO.prototype.acao = function (acao) {
     this._connection.open((err, mongoclient) => {
         mongoclient.collection("acao", (err, collection) => {
-            
+
             let date = new Date();
 
             let tempo = null;
 
-            switch(parseInt(acao.acao)){
+            switch (parseInt(acao.acao)) {
                 case 1: tempo = 1 * 60 * 60000; break;
                 case 2: tempo = 2 * 60 * 60000; break;
                 case 3: tempo = 5 * 60 * 60000; break;
@@ -59,9 +59,13 @@ JogoDAO.prototype.acao = function (acao) {
 JogoDAO.prototype.getAcoes = function (usuario, res) {
     this._connection.open((err, mongoclient) => {
         mongoclient.collection("acao", (err, collection) => {
-            collection.find({ usuario: usuario }).toArray((err, result) => {//recupera o cursor retornado e converte em um array
 
-                res.render('pergaminhos', {acoes: result});
+            let date = new Date();
+            let momento_atual = date.getTime();
+
+            collection.find({ usuario: usuario, acao_termina_em: { $gt: momento_atual } }).toArray((err, result) => {//recupera o cursor retornado e converte em um array
+
+                res.render('pergaminhos', { acoes: result });
 
                 mongoclient.close();
             });
