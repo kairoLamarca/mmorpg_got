@@ -6,7 +6,7 @@ module.exports.jogo = function (application, req, res) {
     }
 
     let msg = '';
-    if(req.query.msg != ''){//A = Erro
+    if (req.query.msg != '') {//A = Erro
         msg = req.query.msg;
     }
 
@@ -18,7 +18,7 @@ module.exports.jogo = function (application, req, res) {
 
     JogoDAO.iniciaJogo(res, usuario, casa, msg);
 
-    
+
 }
 
 module.exports.sair = function (application, req, res) {
@@ -42,7 +42,7 @@ module.exports.pergaminhos = function (application, req, res) {
         return;
     }
 
-    /*recuperar as ações inseridas no banco de dados*/ 
+    /*recuperar as ações inseridas no banco de dados*/
     const connection = application.config.dbConnection;
     const JogoDAO = new application.app.models.JogoDAO(connection);
 
@@ -64,7 +64,7 @@ module.exports.ordenar_acao_sudito = function (application, req, res) {
 
     let erros = req.validationErrors();
 
-    if(erros){
+    if (erros) {
         res.redirect('jogo?msg=A');//A = erro
         return;
     }
@@ -74,6 +74,17 @@ module.exports.ordenar_acao_sudito = function (application, req, res) {
 
     dadosForm.usuario = req.session.usuario;
     JogoDAO.acao(dadosForm);
-    
+
     res.redirect('jogo?msg=B'); // B = sucesso
 }
+
+module.exports.revogar_acao = function (application, req, res) {
+    let url_query = req.query;
+
+    const connection = application.config.dbConnection;
+    const JogoDAO = new application.app.models.JogoDAO(connection);
+
+    let _id = url_query.id_acao;
+
+    JogoDAO.revogarAcao(_id, res);
+};
