@@ -1,3 +1,6 @@
+/* importar o módulo do crypto*/
+const crypto = require("crypto");
+
 function UsuariosDAO(connection) {
     this._connection = connection();
 }
@@ -5,6 +8,10 @@ function UsuariosDAO(connection) {
 UsuariosDAO.prototype.inserirUsuario = function (usuario) {
     this._connection.open((err, mongoclient) => {
         mongoclient.collection("usuarios", (err, collection) => {
+
+            //tipo de criptografia | valor a ser criptografado | tipo de retorno
+            let senha_criptografada = crypto.createHash("md5").update(usuario.senha).digest("hex");
+            usuario.senha = senha_criptografada;
             collection.insert(usuario);
 
             mongoclient.close();
@@ -15,7 +22,10 @@ UsuariosDAO.prototype.inserirUsuario = function (usuario) {
 UsuariosDAO.prototype.autenticar = function (usuario, req, res) {
     this._connection.open((err, mongoclient) => {
         mongoclient.collection("usuarios", (err, collection) => {
-            //collection.find({usuario: {$eq: usuario.usuario}, senha: {$eq: usuario.senha}});
+            
+            let senha_criptografada = crypto.createHash("md5").update(usuario.senha).digest("hex");
+            usuario.senha = senha_criptografada;
+            
             collection.find(usuario).toArray((err, result) => {//recupera o cursor retornado e converte em um array
                 
                 if(result[0] != undefined){
