@@ -1,5 +1,5 @@
 module.exports.cadastro = function(application, req, res){
-    res.render('cadastro', {validacao: {}, dadosForm: {}});
+    res.render('cadastro', {validacao: {}, dadosForm: {}, msg: ''});
 }
 
 module.exports.cadastrar = function(application, req, res){
@@ -25,5 +25,5 @@ module.exports.cadastrar = function(application, req, res){
     UsuariosDAO.inserirUsuario(dadosForm);
     JogoDAO.gerarParametros(dadosForm.usuario);
 
-    res.send('podemos cadastrar');
+    res.render('cadastro', {validacao: {}, dadosForm: {}, msg: 'OK'});
 }
